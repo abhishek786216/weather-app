@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Weather App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 90%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            background: white;
+        }
+
+        .app-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        .links {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            display: none;
+            color: #4ecdc4;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .app-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Weather App</h1>
+        <p class="subtitle">Beautiful Weather Forecasting with Flutter</p>
+
+        <div class="loading" id="loading">🔄 Loading Weather App...</div>
+
+        <div class="app-container">
+            <iframe src="./docs/index.html" class="app-frame" id="weatherApp"
+                    title="Flutter Weather App"
+                    onload="document.getElementById('loading').style.display='none'"
+                    onerror="loadFallback()">
+            </iframe>
+        </div>
+
+        <div class="links">
+            <a href="./docs/index.html" class="btn" target="_blank">🚀 Open Full App</a>
+            <a href="https://github.com/abhishek786216/weather-app" class="btn" target="_blank">📂 View Source</a>
+        </div>
+    </div>
+
+    <script>
+        // Show loading initially
+        document.getElementById('loading').style.display = 'block';
+
+        // Fallback function
+        function loadFallback() {
+            const iframe = document.getElementById('weatherApp');
+            iframe.src = './index.html'; // Try root index.html
+        }
+
+        // Alternative iframe sources to try
+        const sources = ['./docs/index.html', './index.html'];
+        let currentSource = 0;
+
+        function tryNextSource() {
+            const iframe = document.getElementById('weatherApp');
+            if (currentSource < sources.length - 1) {
+                currentSource++;
+                iframe.src = sources[currentSource];
+            }
+        }
+
+        // Retry mechanism
+        setTimeout(() => {
+            const iframe = document.getElementById('weatherApp');
+            if (iframe.contentDocument === null || iframe.contentDocument.body === null) {
+                tryNextSource();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
+
